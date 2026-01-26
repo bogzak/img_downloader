@@ -2,41 +2,36 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Set
 
 
-@dataclass(frozen=True)
-class ParsedLinks:
-    urls: List[str]
-    duplicates_skipped: int
-
-
+@dataclass(frozen=True, slots=True)
 class LinkParser:
-    def parse_file(self, path: Path) -> ParsedLinks:
-        seen: Set[str] = set()
-        unique_urls: List[str] = []
-        duplicates = 0
+    """Parses a text file containing URLs (one per line)."""
 
-        with path.open("r", encoding="utf-8") as f:
-            for raw_line in f:
-                url = self._normalize_line(raw_line)
-                if not url:
-                    continue
+    delimiters: tuple[str, ...] = (",", ";")
 
-                if url in seen:
-                    duplicates += 1
-                    continue
+    def parse_file(self, path: Path, *, encoding: str = "utf-8") -> list[str]:
+        text = path.read_text(encoding=encoding, errors="ignore")
 
-                seen.add(url)
-                unique_urls.append(url)
+        urls: list[str] = []
+        seen: set[str] = set()
 
-        return ParsedLinks(urls=unique_urls, duplicates_skipped=duplicates)
+        for raw in text.splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#"):
+                continue
 
-    @staticmethod
-    def _normalize_line(line: str) -> str:
-        s = line.strip()
-        if not s or s.startswith("#"):
-            return ""
-        s = s.rstrip(",;")
+            for delim in self.delimiters:
+                if delim in line:
+                    line = line.split(delim, 1)[0].strip()
 
-        return s
+            if not line:
+                continue
+
+            if line in seen:
+                continue
+
+            seen.add(line)
+            urls.append(line)
+
+        return urls

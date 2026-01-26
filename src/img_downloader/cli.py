@@ -90,6 +90,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     urls = LinkParser().parse_file(config.input_file, encoding=args.encoding)
+    logging.info("Found %d unique links", len(urls))
     if not urls:
         logging.warning("No links found in %s", config.input_file)
         return 0
