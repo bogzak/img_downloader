@@ -1,69 +1,159 @@
-# Photo Downloader (imgdl)
+# img_downloader 📷⬇️
 
-Cross-platform CLI utility to download images/files from a text file with URLs.
+A small, cross-platform CLI tool for downloading images from a list of URLs.
 
-## Features
+---
 
-- Works on Windows/macOS/Linux (uses `pathlib`, no OS-specific assumptions)
-- Robust link parsing: ignores blank lines, `#` comments, trailing CSV/semicolon fragments
-- Safe/atomic downloads (`.part` temp file then rename)
-- Retries with backoff for transient network errors
-- Optional parallel downloads
+## Key features ✨
 
-## Install (local / editable)
+- Simple CLI workflow
+- Works on Windows, macOS, and Linux
+- Reproducible installs with `uv` and `uv.lock`
+- Clean project layout ready for GitHub
+
+---
+
+## Requirements ✅
+
+- **uv** installed
+- **Python 3.13+** (as defined by the project)
+
+Recommended: pin Python for this repository:
 
 ```bash
-python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
-pip install -U pip
-pip install -e .
+uv python pin 3.13
 ```
 
-## Usage
+---
 
-Download using defaults (`links.txt` -> `downloads/`):
+## Installation (uv) 🚀
+
+Clone the repository and sync the project environment:
 
 ```bash
+git clone https://github.com/bogzak/img_downloader.git
+cd img_downloader
+
+uv sync
+```
+
+What this does:
+- Creates/updates a local virtual environment in `.venv`
+- Installs dependencies from `pyproject.toml`
+- Uses `uv.lock` (when present) for reproducible installs
+
+---
+
+## Usage ▶️
+
+Run the CLI via `uv run` (recommended):
+
+```bash
+uv run imgdl --help
+uv run imgdl
+```
+
+If you prefer activating the virtual environment manually:
+
+### Windows
+```bat
+.\.venv\Scripts\activate
+imgdl --help
 imgdl
 ```
 
-Custom paths and options:
-
+### macOS / Linux
 ```bash
-imgdl --input links.txt --output downloads --workers 8 --timeout 30 --retries 3
+source .venv/bin/activate
+imgdl --help
+imgdl
 ```
 
-### Link file format (`links.txt`)
+---
 
-- One URL per line
-- Blank lines ignored
-- `#` comments supported
-- If a line contains `,` or `;`, everything after the first delimiter is ignored (useful for CSV exports)
+## Input format 🧾
 
-Example:
+Prepare a text file with **one URL per line**, for example:
 
 ```text
-# Product images
-https://example.com/a.jpg
-https://example.com/b.png, some comment
-https://example.com/c.webp; another comment
+https://example.com/image1.jpg
+https://example.com/image2.png
 ```
 
-## Development
+Notes:
+- Keep URLs on separate lines.
+- If your CLI supports comments/blank lines, they will be ignored; check `imgdl --help`.
 
-Run tests:
+---
+
+## Dependency management 📦
+
+Add a runtime dependency:
 
 ```bash
-pytest
+uv add <package>
+uv sync
 ```
 
-Lint:
+Add a development dependency:
 
 ```bash
-ruff check .
+uv add --dev ruff pytest
+uv sync
 ```
 
-## License
+Upgrade dependencies (and refresh the lockfile/environment):
 
-MIT
+```bash
+uv sync --upgrade
+```
+
+---
+
+## Development 🛠️
+
+Run Python inside the project environment:
+
+```bash
+uv run python -c "import img_downloader; print('ok')"
+```
+
+Run tests (if present):
+
+```bash
+uv run pytest
+```
+
+Run linting (if configured):
+
+```bash
+uv run ruff check .
+```
+
+---
+
+## Troubleshooting 🧩
+
+### `Failed to spawn: imgdl` / `program not found`
+
+This usually means the console script entry point was not installed into the environment.
+
+Fix:
+
+```bash
+uv sync
+uv run imgdl --help
+```
+
+If it still happens, force an editable install:
+
+```bash
+uv pip install -e .
+uv run imgdl --help
+```
+
+---
+
+## License 📄
+
+MIT (update this section if you choose a different license).
