@@ -151,9 +151,3 @@ If it still happens, force an editable install:
 uv pip install -e .
 uv run imgdl --help
 ```
-
----
-
-## License 📄
-
-MIT (update this section if you choose a different license).
