@@ -71,6 +71,34 @@ imgdl
 
 ---
 
+## CLI Parameters Documentation
+
+This section provides details about the most important command-line interface (CLI) parameters for the image downloader tool (`imgdl`).
+
+### `--input` / `-i`
+- **Type:** `Path`
+- **Description:** Specifies the path to the file containing URLs to download. The default is `links.txt`.
+
+### `--output` / `-o`
+- **Type:** `Path`
+- **Description:** Specifies the output directory where downloaded files will be saved. The default is `downloads`.
+
+### `--timeout`
+- **Type:** `float`
+- **Default:** `30.0`
+- **Description:** Defines the request timeout in seconds. It specifies the maximum time the downloader will wait for a response.
+
+### `--retries`
+- **Type:** `int`
+- **Default:** `3`
+- **Description:** Specifies how many times the downloader will retry a failed request before marking it as failed.
+
+### `--verbose` / `-v`
+- **Type:** `flag`
+- **Description:** Enables debug logging, which provides more detailed output during execution.
+
+---
+
 ## Input format 🧾
 
 Prepare a text file with **one URL per line**, for example:
@@ -83,30 +111,6 @@ https://example.com/image2.png
 Notes:
 - Keep URLs on separate lines.
 - If your CLI supports comments/blank lines, they will be ignored; check `imgdl --help`.
-
----
-
-## Dependency management 📦
-
-Add a runtime dependency:
-
-```bash
-uv add <package>
-uv sync
-```
-
-Add a development dependency:
-
-```bash
-uv add --dev ruff pytest
-uv sync
-```
-
-Upgrade dependencies (and refresh the lockfile/environment):
-
-```bash
-uv sync --upgrade
-```
 
 ---
 
