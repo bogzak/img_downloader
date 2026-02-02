@@ -110,28 +110,6 @@ uv sync --upgrade
 
 ---
 
-## Development 🛠️
-
-Run Python inside the project environment:
-
-```bash
-uv run python -c "import img_downloader; print('ok')"
-```
-
-Run tests (if present):
-
-```bash
-uv run pytest
-```
-
-Run linting (if configured):
-
-```bash
-uv run ruff check .
-```
-
----
-
 ## Troubleshooting 🧩
 
 ### `Failed to spawn: imgdl` / `program not found`
